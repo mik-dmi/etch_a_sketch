@@ -1,0 +1,10 @@
+body {
+    margin: 20px;
+    height: 960px;
+}
+
+.container {
+    display: grid;
+    
+}
+    
