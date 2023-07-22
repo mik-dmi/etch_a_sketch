@@ -3,14 +3,13 @@ body {
     flex-direction: column;
     margin: 0px;
     align-items: center;
-    height: 960px;
+    
 }
 
 .container {
     display: grid;
     
-    height: 960px;
-    width: 960px;
+
     
     
 }
@@ -18,9 +17,21 @@ body {
 button{
     display: flex;
     width: fit-content;
+    height: fit-content;
     margin: 20px;
     order: -1;
     font-size: larger;
+    font-weight: 800;
 }
 
+
+.secondContainer {
+    display: flex;
+    
+    font-size: larger;
+    font-weight: 800;
+
+    
+    
+}
 
