@@ -2,10 +2,17 @@ var sizeOfOuterGrid = 960;
 var isMouseHover = false;
 
 function getInputFromUser(){
-    let numGrid = null;
+    let numGrid = 102;
     let eachColumnWidth = null;
     let aux = null;
-    numGrid = parseInt(prompt("Number of grid:"));
+    
+
+
+
+    while(numGrid > 100){
+        numGrid = parseInt(prompt("Number of grid (less than 100):"));
+        if(numGrid > 100) alert("do it again");
+    }
     eachColumnWidth = sizeOfOuterGrid / numGrid
     
     aux  = `repeat(${numGrid}, ${eachColumnWidth}px)`
@@ -19,15 +26,37 @@ function getInputFromUser(){
 
 
 
-const grid = document.querySelector('.container');
 let inputUser = null;
 let gridColumnsString = null;
 let numTotalGrid = null;
 
 
-[gridColumnsString ,numTotalGrid] = getInputFromUser();
-grid.innerHTML = '';
-const square = document.createElement('div');
+
+
+
+/* Button to get the user input*/
+const parent = document.querySelector("body");
+const topButton = document.createElement("button");
+topButton.textContent = "Click to define the number of grids";
+topButton.id = "myButton";
+parent.appendChild(topButton);
+
+topButton.addEventListener('click', ()=>{ 
+    [gridColumnsString ,numTotalGrid]= getInputFromUser();
+
+
+
+
+
+
+
+
+
+/* -------------Draw the grid-----------------------  */
+
+const grid = document.querySelector('.container');
+grid.id = "gridContainer";
+grid.innerHTML = '';    
 for (let i = 0; i < numTotalGrid; i++) {
     const square = document.createElement('div');
     square.classList.add("units");
@@ -38,12 +67,14 @@ for (let i = 0; i < numTotalGrid; i++) {
     square.style['border-style'] = 'solid';
     square.style['border-width'] = 'thin'
 } 
-console.log(gridColumnsString)
 
 grid.style.gridTemplateColumns = gridColumnsString;
 grid.style.gridTemplateRows = gridColumnsString;
 
+/*--------------------------------------------------- */
 
+
+/* Leaves a trace of the mouse in the grid */
 let squareUnit = document.querySelectorAll("div.units");
 console.log(squareUnit);
 squareUnit.forEach((space) =>{
@@ -58,4 +89,5 @@ squareUnit.forEach((space) =>{
     console.log(isMouseHover)
   }, false);
 })
-
+/*------------------------------------------*/
+});
