@@ -1,133 +1,149 @@
-var sizeOfOuterGrid = 960;
-var isMouseHover = false;
-var gridColor = "rgb(255, 255, 144)";
-var colorButton = "rgb(140, 140, 140)"
+/*---- Asks the size of the grid to the user and returns a template to format the grid accordingly---*/
 function getInputFromUser(){
     let numGrid = 102;
     let eachColumnWidth = null;
     let aux = null;
-    
-
-
-
     while(numGrid > 100){
         numGrid = parseInt(prompt("Number of grid (less than 100):"));
         if(numGrid > 100) alert("do it again");
     }
     eachColumnWidth = sizeOfOuterGrid / numGrid
-    
-    aux  = `repeat(${numGrid}, ${eachColumnWidth}px)`
-    console.log(aux)
-    let aux_sec = numGrid*numGrid;
-    console.log(aux_sec )
-    return [ aux ,aux_sec ];
+    return [ `repeat(${numGrid}, ${eachColumnWidth}px)` ,(numGrid*numGrid) ];
 }
+/*-----------------------------------------------------------------------------------------------*/
+/* -------------Draw the grid---------------------------------------------------------*/
+function buildGrid(numSquares, templateForGridSize, grid){
+    grid.id = "gridContainer";
+    deleteGrid(document.querySelectorAll("div.units"));
+    for (let i = 0; i < numSquares; i++) {
+        const square = document.createElement('div');
+        square.classList.add("units");
+        square.id = `units${i}`;
+        grid.appendChild(square);
+        square.style.backgroundColor = gridColor;
+        square.style['border-color'] = 'black';
+        square.style['border-style'] = 'solid';
+        square.style['border-width'] = 'thin'
+    } 
+    grid.style.gridTemplateColumns = templateForGridSize;
+    grid.style.gridTemplateRows = templateForGridSize;
+    }
+    
+    function deleteGrid(divUnits){
+        for(var i = 0; i < divUnits.length; i++){
+            divUnits[i].parentNode.removeChild(divUnits[i]);
+        }
+    }
+/*------------------------------------------------------------------------------------- */
+/*------------------- Different color buttons ---------------------------*/
+function makeButtons(buttonData){
+    const buttonContainer = document.querySelector('.secondContainer');
+    const button = document.createElement("button");
+    let color = null;
+    button.textContent = buttonData.text;
+    button.style.backgroundColor = colorButton;
+    button.style.color = buttonData.letterColor; // Optional: Set a default text color for better visibility
+    buttonContainer.appendChild(button);
+    color = buttonData.colorOfMouse;
+    button.addEventListener('click', ()=>{ 
+        colorOff = buttonData.colorOfMouse;        
+    })
+}
+/*-------------------------------------------------------------------------*/
+/*--------------color of the mouse Trace--------------------------*/
+function colorTrace(color, iterations){
+    let maxVal = 0xFFFFFF;
+    if( color != 'rainbow') return color;    
+    else{
+/* Rainbow effect */
+    let maxVal = 255;
+    let red = Math.floor(Math.random() * maxVal);
+    let green = Math.floor(Math.random() * maxVal);
+    let blue = Math.floor(Math.random() * maxVal);
+    colorRGB = colorShade(red, green,blue, iterations);
+             /*random color in #FFFFFF format*/
+/* Rainbow effect */
 
+    
+        return colorRGB;
+    }
+}
+/*--------- Changes the shade of a color. In this case is lighting the color----------- */
+function colorShade(red, green,blue,  iterations){
+    const percentage = iterations * 5;
+    const darkValue = Math.round(percentage * 2.20);
+    const darkRed = Math.max(0, red + darkValue);
+    const darkGreen = Math.max(0, green + darkValue);
+    const darkBlue = Math.max(0, blue + darkValue);
+    
+    return `rgb(${darkRed}, ${darkGreen}, ${darkBlue})`;
+}
+/*--------------------------------------------------------------------------------------*/
 
-
-
+var sizeOfOuterGrid = 960;
+var isMouseHover = false;
+var gridColor = "rgb(255, 255, 144)";
+var colorButton = "rgb(140, 140, 140)"
 
 let inputUser = null;
-let gridColumnsString = null;
-let numTotalGrid = null;
-let colorOff = 'black';
+let gridColumnsString = 'repeat(1, 960px)';
+let numTotalGrid = 1;
+let colorOff = 'red';
+let iterations = 0;
+let clickedButtonInfo = null;
+
+const typesOfColors = [
+    {text: "Red", letterColor: "red", colorOfMouse: "red" },
+    {text: "Blue", letterColor: "blue", colorOfMouse: "blue" },
+    {text: "Green", letterColor: "green", colorOfMouse: "green" },
+    {text: "Rainbow", letterColor: "white", colorOfMouse: "rainbow"},
+    {text: "Erase", letterColor: gridColor, colorOfMouse: gridColor }
+    
+  ];
+
+/*----------------Creation of elements in the DOM---------------*/
+const topButton = document.createElement("button");
 const redButton = document.createElement("button");
 const blackButton = document.createElement("button");
 const blueButton = document.createElement("button");
 const eraseButton = document.createElement("button");
+const rainBowButton = document.createElement("button");
+const gridSelector = document.querySelector('.container');
 
+buildGrid(numTotalGrid, gridColumnsString, gridSelector); /* inicializing a grid */
 
-/* Button to get the user input*/
+/*-----------------Button and working grid from user input -----------------*/
 const parent = document.querySelector('body');
-const topButton = document.createElement("button");
 topButton.textContent = "Click to define the number of grids";
 topButton.id = "myButton";
 parent.appendChild(topButton);
-
 topButton.addEventListener('click', ()=>{ 
     [gridColumnsString ,numTotalGrid]= getInputFromUser();
-
-
-
-const buttonContainer = document.querySelector('.secondContainer');
-/*------------------Red button---------------------*/
-redButton.textContent ="Red"
-redButton.style.backgroundColor = colorButton;
-redButton.style.color= 'red';
-buttonContainer.appendChild(redButton);
-redButton.addEventListener('click', ()=>{ 
-    colorOff = 'red';
-})
-/*--------------------------------------------------*/
-
-/*------------------Black button---------------------*/
-blackButton.textContent ="Black"
-blackButton.style.color= 'Black';
-blackButton.style.backgroundColor = colorButton;
-buttonContainer.appendChild(blackButton);
-blackButton.addEventListener('click', ()=>{ 
-    colorOff = 'black';
-})
-
-/*--------------------------------------------------*/
-/*------------------blue button---------------------*/
-blueButton.textContent ="Blue"
-blueButton.style.color= 'blue';
-blueButton.style.backgroundColor = colorButton;
-buttonContainer.appendChild(blueButton);
-blueButton.addEventListener('click', ()=>{ 
-    colorOff = 'blue';
-})
-
-/*--------------------------------------------------*/
-/*------------------Erase  button---------------------*/
-eraseButton.textContent ="Erase"
-eraseButton.style.color= 'white';
-eraseButton.style.backgroundColor = colorButton;
-buttonContainer.appendChild(eraseButton);
-eraseButton.addEventListener('click', ()=>{ 
-    colorOff = gridColor;
-})
-
-/*--------------------------------------------------*/
-
-
-/* -------------Draw the grid-----------------------  */
-
-const grid = document.querySelector('.container');
-grid.id = "gridContainer";
-grid.innerHTML = '';    
-for (let i = 0; i < numTotalGrid; i++) {
-    const square = document.createElement('div');
-    square.classList.add("units");
-    square.id = `units${i}`;
-    grid.appendChild(square);
-    square.style.backgroundColor = gridColor;
-    square.style['border-color'] = 'black';
-    square.style['border-style'] = 'solid';
-    square.style['border-width'] = 'thin'
-} 
-
-grid.style.gridTemplateColumns = gridColumnsString;
-grid.style.gridTemplateRows = gridColumnsString;
-
-/*--------------------------------------------------- */
-
-
-/* Leaves a trace of the mouse in the grid */
-let squareUnit = document.querySelectorAll("div.units");
-console.log(squareUnit);
-squareUnit.forEach((space) =>{
-    space.addEventListener("mouseleave", function(e){
-    isMouseHover = false
-    space.style.backgroundColor = colorOff;
-    
-  }, false);
-  space.addEventListener("mouseover", function(e){
-    isMouseHover = true
-    space.style.backgroundColor = 'yellow';
-    console.log(isMouseHover)
-  }, false);
+    console.log(gridColumnsString + " ssdd " + numTotalGrid);
+    deleteGrid(gridSelector);
+    buildGrid(numTotalGrid, gridColumnsString, gridSelector);
+    /* Leaves a trace of the mouse in the grid */
+    let squareUnit = document.querySelectorAll("div.units");
+    console.log(squareUnit);
+    squareUnit.forEach((space) =>{
+        space.addEventListener("mouseleave", function(e){
+        isMouseHover = false
+        iterations = (iterations < 20) ? iterations + 1 : 1;
+        space.style.backgroundColor = colorTrace(colorOff, iterations);
+        console.log("clicked2--" +clickedButtonInfo)
+        
+    }, false);
+    space.addEventListener("mouseover", function(e){
+        isMouseHover = true
+        space.style.backgroundColor = colorTrace('yellow',iterations);
+        
+    }, false);
 })
 /*------------------------------------------*/
+    
 });
+    for (const element of typesOfColors) {          /*buttons for the different mouse traces*/
+         makeButtons(element);
+    }  
+   
+
