@@ -1,3 +1,19 @@
+html{
+    background-color: #d7d5d5d8;
+}
+.heading {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    font-size: 80px;
+    padding: 10px 0;
+    color: white; /* Set the text color to white */
+    text-shadow: 2px 2px 0 black;
+    font-weight: bolder;
+    margin:10px ;
+    margin-bottom: 0px;
+    
+}
+
 body {
     display: flex;
     flex-direction: column;
@@ -6,12 +22,9 @@ body {
     
 }
 
-.container {
+.grid {
     display: grid;
-    
-
-    
-    
+    background-color: #f0f0f0;   
 }
    
 button{
@@ -22,6 +35,13 @@ button{
     order: -1;
     font-size: larger;
     font-weight: 800;
+    padding: 10px 20px;
+    font-family: Arial, sans-serif;
+    background-color: #2991ff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 
@@ -34,4 +54,14 @@ button{
     
     
 }
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    height: fit-content ;
+    
+}
+
 

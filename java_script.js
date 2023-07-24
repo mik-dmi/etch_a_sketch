@@ -5,7 +5,7 @@ function getInputFromUser(){
     let aux = null;
     while(numGrid > 100){
         numGrid = parseInt(prompt("Number of grid (less than 100):"));
-        if(numGrid > 100) alert("do it again");
+        if(numGrid > 100 || isNaN(numGrid)  ) alert("Try again (a number between 1-100)");
     }
     eachColumnWidth = sizeOfOuterGrid / numGrid
     return [ `repeat(${numGrid}, ${eachColumnWidth}px)` ,(numGrid*numGrid) ];
@@ -21,8 +21,8 @@ function buildGrid(numSquares, templateForGridSize, grid){
         square.id = `units${i}`;
         grid.appendChild(square);
         square.style.backgroundColor = gridColor;
-        square.style['border-color'] = 'black';
-        square.style['border-style'] = 'solid';
+        square.style['border-color'] = 'white';
+        square.style['border-style'] = 'hidden double dashed';
         square.style['border-width'] = 'thin'
     } 
     grid.style.gridTemplateColumns = templateForGridSize;
@@ -82,8 +82,8 @@ function colorShade(red, green,blue,  iterations){
 
 var sizeOfOuterGrid = 960;
 var isMouseHover = false;
-var gridColor = "rgb(255, 255, 144)";
-var colorButton = "rgb(140, 140, 140)"
+var gridColor = "rgb(255, 255, 154)";
+var colorButton = "rgb(170, 170, 170)"
 
 let inputUser = null;
 let gridColumnsString = 'repeat(1, 960px)';
@@ -97,7 +97,7 @@ const typesOfColors = [
     {text: "Blue", letterColor: "blue", colorOfMouse: "blue" },
     {text: "Green", letterColor: "green", colorOfMouse: "green" },
     {text: "Rainbow", letterColor: "white", colorOfMouse: "rainbow"},
-    {text: "Erase", letterColor: gridColor, colorOfMouse: gridColor }
+    {text: "Erase", letterColor: gridColor, colorOfMouse: gridColor }   
     
   ];
 
@@ -108,14 +108,16 @@ const blackButton = document.createElement("button");
 const blueButton = document.createElement("button");
 const eraseButton = document.createElement("button");
 const rainBowButton = document.createElement("button");
-const gridSelector = document.querySelector('.container');
+const gridSelector = document.querySelector('.grid');
 
 buildGrid(numTotalGrid, gridColumnsString, gridSelector); /* inicializing a grid */
 
 /*-----------------Button and working grid from user input -----------------*/
-const parent = document.querySelector('body');
-topButton.textContent = "Click to define the number of grids";
+const parent = document.querySelector('.container');
+topButton.textContent = "Start by defining the number of grids";
 topButton.id = "myButton";
+topButton.style.fontSize = "25px";
+topButton.style.pa = "20px";
 parent.appendChild(topButton);
 topButton.addEventListener('click', ()=>{ 
     [gridColumnsString ,numTotalGrid]= getInputFromUser();
